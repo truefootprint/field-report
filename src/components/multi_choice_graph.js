@@ -13,6 +13,7 @@ function MultiChoiceGraph(props) {
       <Rbs.Row>
           <Rbs.Col>
             <h3> Activity: { props.project_activity.project_activity_name } </h3>
+            <br/>
               <Rbs.Row>
               {props.project_activity.project_activity_graphs.map((graph) => (
                 <Rbs.Col md={3} key={graph.question_id}>
