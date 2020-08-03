@@ -23,22 +23,8 @@ function Chart() {
   const [selectedValues, setSelectedValues] = useState({project_id: '', programme_id: '', startDate: new Date(), endDate: new Date()})
 
   useEffect(() => {
-
-      //     axios.get(`http://localhost:3000/reports/20`, {
-      //   params: selectedValues
-      // }).then(res => {
-      //     console.log("DATAT")
-      //     console.log(res.data)
-      //     setData(res.data)
-      //   })
-      //   .catch(err => {
-      //     console.log(err)
-      //   })
-
     axios.get(`${host}/reports/setup_report_form`)
         .then(res => {
-          console.log("PROGRAMMES")
-          console.log(res.data.programmes)
           setProgrammes(res.data.programmes)
         })
         .catch(err => {
@@ -48,12 +34,6 @@ function Chart() {
 
   function handleGenerateReport(){
       console.log(selectedValues)
-      // axios({
-      //     method: 'get',
-      //     url: `http://localhost:3000/reports/${selectedValues.project_id}`,
-      //     data: selectedValues
-      //   });
-
       axios.get(`${host}/reports/99`, {
         params: selectedValues
       }).then(res => {
@@ -67,20 +47,13 @@ function Chart() {
   }
 
   function selectProjectHandler(event){
-    setSelectedValues({...selectedValues, project_id: event.target.value})
     console.log(event.target.value)
-    //get report for project
-    // axios.get(`http://localhost:3000/reports/${event.target.value}`)
-    //     .then(res => {
-    //       console.log(res.data.activity)
-    //       setData(res.data)
-    //     })
-    //     .catch(err => {
-    //       console.log(err)
-    //     })
+    setSelectedValues({...selectedValues, project_id: event.target.value})
   }
 
   function selectProgrammeHandler(event){
+    console.log("SEt programme id")
+    console.log(event.target.value)
     setSelectedValues({...selectedValues, programme_id: event.target.value})
     // get all projects for this programme selected
     axios.get(`${host}/reports/get_projects_list/${event.target.value}`)
@@ -93,6 +66,7 @@ function Chart() {
           console.log(err)
         })
   }
+
   return (
 
 
@@ -100,6 +74,7 @@ function Chart() {
     <Rbs.Row>
     <Rbs.Col>
       <h1>Reports</h1>
+      <p>{host}</p>
         <Rbs.Form>
               <Rbs.Form.Group controlId="exampleForm.ControlSelect2">
               <Rbs.Row>
