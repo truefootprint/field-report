@@ -7,6 +7,15 @@ import {
 import * as Rbs from 'react-bootstrap';
 import DatePicker from "react-datepicker";
 
+
+let host;
+
+if (window.location.hostname === "localhost") {
+  host = "http://localhost:3000";
+} else {
+  host = "https://field-backend.truefootprint.com";
+}
+
 function Chart() {
 	const [data, setData] = useState({});
   const [programmes, setProgrammes] = useState([]);
@@ -26,7 +35,7 @@ function Chart() {
       //     console.log(err)
       //   })
 
-    axios.get("http://localhost:3000/reports/setup_report_form")
+    axios.get(`${host}/reports/setup_report_form`)
         .then(res => {
           console.log("PROGRAMMES")
           console.log(res.data.programmes)
@@ -45,7 +54,7 @@ function Chart() {
       //     data: selectedValues
       //   });
 
-      axios.get(`http://localhost:3000/reports/99`, {
+      axios.get(`${host}/reports/99`, {
         params: selectedValues
       }).then(res => {
           console.log("DATAT")
@@ -74,7 +83,7 @@ function Chart() {
   function selectProgrammeHandler(event){
     setSelectedValues({...selectedValues, programme_id: event.target.value})
     // get all projects for this programme selected
-    axios.get(`http://localhost:3000/reports/get_projects_list/${event.target.value}`)
+    axios.get(`${host}/reports/get_projects_list/${event.target.value}`)
         .then(res => {
           console.log("PROGRAMMES")
           console.log(res.data.projects)
