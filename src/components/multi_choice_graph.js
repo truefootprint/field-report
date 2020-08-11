@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {
-  BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend,
-} from 'recharts';
+import {HorizontalBar} from 'react-chartjs-2';
 import * as Rbs from 'react-bootstrap';
 import DatePicker from "react-datepicker";
+const options = {scales: {xAxes: [{ticks: {min: 0}}]}}
 
 
 function MultiChoiceGraph(props) {
   var randomColor = require('randomcolor'); // import the script
+  let color = "#1e9ed9"; //randomColor({hue: 'blue'});
   return (
       <Rbs.Row>
           <Rbs.Col>
@@ -16,18 +16,17 @@ function MultiChoiceGraph(props) {
             <br/>
               <Rbs.Row>
               {props.project_activity.project_activity_graphs.map((graph) => (
-                <Rbs.Col md={3} key={graph.question_id}>
-                  <div >
-                    <div>{ graph.question_text }</div>
-                    <BarChart layout="vertical" width={500} height={300} data={graph.question_reponses_graph}
-                      margin={{ top: 5, right: 30, left: 20, bottom: 5,}}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis type="number"/>
-                      <YAxis dataKey="option_text" type="category"/>
-                      <Tooltip />
-                      <Bar dataKey="count" fill={randomColor({hue: 'green'})}/>
-                    </BarChart>
-                  </div>
+                <Rbs.Col md={4} key={graph.question_id}>
+                       {/* Bar Chart */}
+                      <div className="card shadow mb-4">
+                        <div className="card-header py-3">
+                          <h6 className="m-0 font-weight-bold text-primary">{ graph.question_text }</h6>
+                        </div>
+                        <div className="card-body">
+                            <HorizontalBar options={options} data={graph.question_reponses_graph} />
+                          <hr />
+                        </div>
+                      </div>
                   <br/><br/>
                 </Rbs.Col>
                 ))}
@@ -38,3 +37,6 @@ function MultiChoiceGraph(props) {
 }
 
 export default MultiChoiceGraph;
+
+
+
