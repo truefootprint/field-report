@@ -3,10 +3,10 @@ import axios from 'axios';
 import {HorizontalBar} from 'react-chartjs-2';
 import * as Rbs from 'react-bootstrap';
 import DatePicker from "react-datepicker";
-const options = {scales: {xAxes: [{ticks: {min: 0}}]}}
-
 
 function MultiChoiceGraph(props) {
+  const options = { scales: { yAxes: [{}],
+                              xAxes: [{ barThickness: 10, maxBarThickness: 18, ticks: { min: 0 }, barPercentage: 0.5 }] } };
   var randomColor = require('randomcolor'); // import the script
   let color = "#1e9ed9"; //randomColor({hue: 'blue'});
   return (

@@ -16,19 +16,6 @@ host = "http://localhost:3000";
 //   host = "https://field-backend.truefootprint.com";
 // }
 
-const photos = [
-  {
-    src: "https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(145).jpg",
-    width: 4,
-    height: 3,
-  },
-  {
-    src: "https://mdbootstrap.com/img/Photos/Lightbox/Original/img%20(150).jpg",
-    width: 1,
-    height: 1,
-  },
-];
-
 function Chart() {
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
@@ -106,7 +93,7 @@ function Chart() {
       });
   }
 
-  const options = { scales: { xAxes: [{ ticks: { min: 0 } }] } };
+  const options = { scales: { xAxes: [{ ticks: { beginAtZero: true } }] } };
 
   function project_issues(data) {
     if (data && data.project_issues) {
@@ -120,6 +107,41 @@ function Chart() {
             </div>
             <div className="card-body">
               <HorizontalBar data={data.project_issues} options={options} />
+            </div>
+          </div>
+        </Rbs.Col>
+      );
+    }
+  }
+
+  function photos(data) {
+    if (data && data.photos) {
+      return (
+        <Rbs.Col>
+          <div className="card shadow mb-4">
+            <div className="card-header py-3">
+              <h6 className="m-0 font-weight-bold text-primary">Gallery</h6>
+            </div>
+            <div className="card-body">
+              <Gallery
+                photos={data.photos}
+                onClick={openLightbox}
+                direction={"column"}
+              />
+              <ModalGateway>
+                {viewerIsOpen ? (
+                  <Modal onClose={closeLightbox}>
+                    <Carousel
+                      currentIndex={currentImage}
+                      views={data.photos.map((x) => ({
+                        ...x,
+                        srcset: "hello", //x.srcSet,
+                        caption: x.text, //x.title,
+                      }))}
+                    />
+                  </Modal>
+                ) : null}
+              </ModalGateway>
             </div>
           </div>
         </Rbs.Col>
@@ -220,8 +242,7 @@ function Chart() {
 
       <Rbs.Row>
         <Rbs.Col>
-          <h2> Programme name: {data.programme_name} </h2>
-          <h3> Project name: {data.project_name} </h3>
+        <h3>{ data && data.activity ? `Programme name: ${data.programme_name}, Project name: ${data.project_name}` : ""}</h3>
         </Rbs.Col>
       </Rbs.Row>
       <br />
@@ -236,61 +257,8 @@ function Chart() {
           />
         ))}
 
-
       <Rbs.Container fluid>
-        <Rbs.Row>
-          <Rbs.Col>
-            <div className="card shadow mb-4">
-              <div className="card-header py-3">
-                <h6 className="m-0 font-weight-bold text-primary">
-                  Gallery
-                </h6>
-              </div>
-              <div className="card-body">
-                <Gallery photos={photos} onClick={openLightbox} />
-                <ModalGateway>
-                  {viewerIsOpen ? (
-                    <Modal onClose={closeLightbox}>
-                      <Carousel
-                        currentIndex={currentImage}
-                        views={photos.map((x) => ({
-                          ...x,
-                          srcset: x.srcSet,
-                          caption: x.title,
-                        }))}
-                      />
-                    </Modal>
-                  ) : null}
-                </ModalGateway>
-              </div>
-            </div>
-          </Rbs.Col>
-
-
-
-
-
-          {data.photos &&
-            data.photos.map((photo) => (
-              <Rbs.Col xs={6} md={3} key={photo.photo_url}>
-                <Rbs.Card>
-                  <Rbs.Card.Body>
-                    <Rbs.Image src={photo.photo_url} fluid />
-                    <pre>
-                      <small>
-                        Programme name: {photo.programme_name} <br />
-                        Project name: {photo.project_name} <br />
-                        Activity name: {photo.activity_name} <br />
-                        User name, id: {photo.user_name}, {photo.user_id} <br />
-                        Response Id: {photo.response_id} <br />
-                        Project Question text: {photo.project_question_text}
-                      </small>
-                    </pre>
-                  </Rbs.Card.Body>
-                </Rbs.Card>
-              </Rbs.Col>
-            ))}
-        </Rbs.Row>
+        <Rbs.Row>{photos(data)}</Rbs.Row>
       </Rbs.Container>
     </div>
   );
