@@ -29,6 +29,20 @@ function Chart() {
     setCurrentImage(0);
     setViewerIsOpen(false);
   };
+
+  const [currentIssuesImage, setCurrentIssuesImage] = useState(0);
+  const [viewerIssuesIsOpen, setIssuesViewerIsOpen] = useState(false);
+
+  const openIssuesLightbox = useCallback((event, { photo, index }) => {
+    setCurrentIssuesImage(index);
+    setIssuesViewerIsOpen(true);
+  }, []);
+
+  const closeIssuesLightbox = () => {
+    setCurrentIssuesImage(0);
+    setIssuesViewerIsOpen(false);
+  };
+
   const [data, setData] = useState({});
   const [programmes, setProgrammes] = useState([]);
   const [projects, setProjects] = useState([]);
@@ -120,7 +134,7 @@ function Chart() {
         <Rbs.Col>
           <div className="card shadow mb-4">
             <div className="card-header py-3">
-              <h6 className="m-0 font-weight-bold text-primary">Gallery</h6>
+              <h6 className="m-0 font-weight-bold text-primary">Gallery (reponses)</h6>
             </div>
             <div className="card-body">
               <Gallery
@@ -134,6 +148,41 @@ function Chart() {
                     <Carousel
                       currentIndex={currentImage}
                       views={data.photos.map((x) => ({
+                        ...x,
+                        srcset: "hello", //x.srcSet,
+                        caption: x.text, //x.title,
+                      }))}
+                    />
+                  </Modal>
+                ) : null}
+              </ModalGateway>
+            </div>
+          </div>
+        </Rbs.Col>
+      );
+    }
+  }
+
+  function issue_photos(data) {
+    if (data && data.issue_photos) {
+      return (
+        <Rbs.Col>
+          <div className="card shadow mb-4">
+            <div className="card-header py-3">
+              <h6 className="m-0 font-weight-bold text-primary">Gallery (Issues)</h6>
+            </div>
+            <div className="card-body">
+              <Gallery
+                photos={data.issue_photos}
+                onClick={openIssuesLightbox}
+                direction={"column"}
+              />
+              <ModalGateway>
+                {viewerIssuesIsOpen ? (
+                  <Modal onClose={closeIssuesLightbox}>
+                    <Carousel
+                      currentIndex={currentIssuesImage}
+                      views={data.issue_photos.map((x) => ({
                         ...x,
                         srcset: "hello", //x.srcSet,
                         caption: x.text, //x.title,
@@ -259,6 +308,7 @@ function Chart() {
 
       <Rbs.Container fluid>
         <Rbs.Row>{photos(data)}</Rbs.Row>
+        <Rbs.Row>{issue_photos(data)}</Rbs.Row>
       </Rbs.Container>
     </div>
   );

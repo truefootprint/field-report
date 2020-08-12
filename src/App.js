@@ -4,6 +4,7 @@ import './App.css';
 import Chart from "./components/chart.js"
 import * as Rbs from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
+//import './all.min.css';
 import './sb-admin-2.min.css';
 
 function App() {
