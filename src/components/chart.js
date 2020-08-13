@@ -8,7 +8,7 @@ import DatePicker from "react-datepicker";
 import Carousel, { Modal, ModalGateway } from "react-images";
 
 let host;
-//shost = "https://field-backend.truefootprint.com";
+//host = "https://field-backend.truefootprint.com";
 host = "http://localhost:3000";
 // if (window.location.hostname === "localhost") {
 //   host = "http://localhost:3000";
@@ -140,7 +140,7 @@ function Chart() {
               <Gallery
                 photos={data.photos}
                 onClick={openLightbox}
-                direction={"column"}
+
               />
               <ModalGateway>
                 {viewerIsOpen ? (
@@ -175,7 +175,6 @@ function Chart() {
               <Gallery
                 photos={data.issue_photos}
                 onClick={openIssuesLightbox}
-                direction={"column"}
               />
               <ModalGateway>
                 {viewerIssuesIsOpen ? (
