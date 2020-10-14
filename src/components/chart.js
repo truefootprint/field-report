@@ -52,10 +52,12 @@ function Chart() {
     startDate: new Date(),
     endDate: new Date(),
   });
-
+  
   useEffect(() => {
     axios
-      .get(`${host}/reports/setup_report_form`)
+      .get(`${host}/reports/setup_report_form`, {
+        headers: {'Authorization': `Basic ${localStorage.getItem("token")}`}
+      })
       .then((res) => {
         setProgrammes(res.data.programmes);
       })
@@ -74,6 +76,7 @@ function Chart() {
     };
     axios
       .get(`${host}/reports/99`, {
+        headers: {'Authorization': `Basic ${localStorage.getItem("token")}`},
         params: request,
       })
       .then((res) => {
@@ -98,7 +101,7 @@ function Chart() {
     setSelectedValues({ ...selectedValues, programme_id: event.target.value });
     // get all projects for this programme selected
     axios
-      .get(`${host}/reports/get_projects_list/${event.target.value}`)
+      .get(`${host}/reports/get_projects_list/${event.target.value}`, { headers: {'Authorization': `Basic ${localStorage.getItem("token")}`}})
       .then((res) => {
         setProjects(res.data.projects);
       })
