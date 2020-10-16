@@ -201,17 +201,11 @@ function Chart() {
   }
 
   return (
-    <div>
-      <h3>Reports</h3>
+    <div>     
       <div className="card shadow mb-4">
         <div className="card-header py-3">
           <h6 className="m-0 font-weight-bold text-primary">
             Select Panel{" "}
-            <small>
-              {" "}
-              beta version 0.3 (deployed 7 Aug 2020 - 10:51 SAST). Using host:{" "}
-              {host}
-            </small>
           </h6>
         </div>
         <div className="card-body">
@@ -281,7 +275,7 @@ function Chart() {
                   />
                 </Rbs.Col>
                 <Rbs.Col>
-                  <Rbs.Button variant="primary" onClick={handleGenerateReport}>
+                  <Rbs.Button variant="primary" onClick={handleGenerateReport} style={{"margin-top": "30px"}}>
                     Generate Report
                   </Rbs.Button>
                 </Rbs.Col>
