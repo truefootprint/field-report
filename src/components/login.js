@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useHistory } from "react-router-dom";
+
 
 let host;
+let logged_in = false;
 //host = "https://field-backend.truefootprint.com";
 host = "http://localhost:3000";
 
 function Login(props) {
+  let history = useHistory();
   const [token, setToken] = useState("");
   
   function handleChange(event) {
@@ -27,14 +31,20 @@ function Login(props) {
         console.log(res.status === 200)
         console.log(token)
         if (res.status === 200) {
+          console.log("BEFORE REDIRACT");
           localStorage.setItem("token", token);
-          props.history.push("/dashboard")
+          //window.location.replace("/dashboard");          
+          
+          //props.history.push("/dashboard")
         }
         //setProgrammes(res.data.programmes);
       })
       .catch((err) => {
         console.log(err);
       });
+      if(localStorage.getItem("token")){
+        history.push('/dashboard');
+      }
   }
 
   return (

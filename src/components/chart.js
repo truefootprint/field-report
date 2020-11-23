@@ -59,7 +59,7 @@ function Chart() {
         headers: {'Authorization': `Basic ${localStorage.getItem("token")}`}
       })
       .then((res) => {
-        setProgrammes(res.data.programmes);
+        setProgrammes(res.data.programmes.sort((a, b) => a.name.localeCompare(b.name)));
       })
       .catch((err) => {
         console.log(err);
@@ -103,7 +103,7 @@ function Chart() {
     axios
       .get(`${host}/reports/get_projects_list/${event.target.value}`, { headers: {'Authorization': `Basic ${localStorage.getItem("token")}`}})
       .then((res) => {
-        setProjects(res.data.projects);
+        setProjects(res.data.projects.sort((a, b) => a.name.localeCompare(b.name)));
       })
       .catch((err) => {
         console.log(err);

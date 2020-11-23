@@ -17,9 +17,10 @@ function App() {
       {/* <Login />
       <Dashboard /> */}
       <Route path="/" exact component={Login}/>
+      <Route path="/#" exact component={Login}/>
       <Route path="/field-report" exact component={Login}/>
       {/* <Route path="/dashboard" component={Dashboard}/> */}
-      <ProtectedRoute exact path='/dashboard' token={localStorage.getItem("token")} component={Dashboard} />
+      <ProtectedRoute exact path='/dashboard' token={localStorage.getItem("token")} component={Dashboard} />      
       </Router>
   );
 }
