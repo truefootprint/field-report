@@ -272,6 +272,7 @@ function Chart() {
                       })
                     }
                     type="date"
+                    value={ new Date().toISOString().slice(0,10) }
                     style={{ width: "100%" }}
                   />
                 </Rbs.Col>
