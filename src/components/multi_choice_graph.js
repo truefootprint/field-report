@@ -22,7 +22,7 @@ function MultiChoiceGraph(props) {
                         <div className="card-header py-3">
                           <h6 className="m-0 font-weight-bold text-primary">{ graph.question_text }</h6>
                         </div>
-                        <div className="card-body">
+                        <div className="card-body" style={{padding: "5px"}}>
                             <HorizontalBar options={options} data={graph.question_reponses_graph} />
                           <hr />
                         </div>

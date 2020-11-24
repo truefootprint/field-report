@@ -17,6 +17,7 @@ host = "http://localhost:3000";
 // }
 
 function Chart() {
+  
   const [currentImage, setCurrentImage] = useState(0);
   const [viewerIsOpen, setViewerIsOpen] = useState(false);
 
@@ -64,6 +65,8 @@ function Chart() {
       .catch((err) => {
         console.log(err);
       });
+    document.getElementById("start-date-select").value = "2020-06-01";
+    document.getElementById("end-date-select").value = new Date().toISOString().slice(0,10);
   }, []); // END OF USE EFFECT FOR INTIAL LOAD
 
   function handleGenerateReport() {
@@ -250,14 +253,14 @@ function Chart() {
                   <Rbs.Form.Label>Start date</Rbs.Form.Label>
                   <Rbs.FormControl
                     id="start-date-select"
-                    onChange={(date) =>
+                    onChange={(date) => {
                       setSelectedValues({
                         ...selectedValues,
                         startDate: date.target.value,
-                      })
+                      });
+                      }
                     }
                     type="date"
-                    value="2020-06-01"
                     style={{ width: "100%" }}
                   />
                 </Rbs.Col>
@@ -272,7 +275,6 @@ function Chart() {
                       })
                     }
                     type="date"
-                    value={ new Date().toISOString().slice(0,10) }
                     style={{ width: "100%" }}
                   />
                 </Rbs.Col>
@@ -309,6 +311,7 @@ function Chart() {
         <Rbs.Row>{issue_photos(data)}</Rbs.Row>
       </Rbs.Container>
     </div>
-  );
+  );  
 }
+
 export default Chart;
