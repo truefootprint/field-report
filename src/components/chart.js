@@ -257,6 +257,7 @@ function Chart() {
                       })
                     }
                     type="date"
+                    value="2020-06-01"
                     style={{ width: "100%" }}
                   />
                 </Rbs.Col>
