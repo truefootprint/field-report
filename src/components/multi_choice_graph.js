@@ -6,7 +6,7 @@ import DatePicker from "react-datepicker";
 
 function MultiChoiceGraph(props) {
   const options = { scales: { yAxes: [{}],
-                              xAxes: [{ barThickness: 10, maxBarThickness: 18, ticks: { min: 0 }, barPercentage: 0.5 }] } };
+                              xAxes: [{ barThickness: 10, maxBarThickness: 18, ticks: { min: 0, precision: 0 }, barPercentage: 0.5 }] } };
   var randomColor = require('randomcolor'); // import the script
   let color = "#1e9ed9"; //randomColor({hue: 'blue'});
   return (
