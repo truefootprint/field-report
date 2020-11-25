@@ -113,7 +113,7 @@ function Chart() {
       });
   }
 
-  const options = { scales: { xAxes: [{ ticks: { beginAtZero: true } }] } };
+  const options = { scales: { xAxes: [{ ticks: { beginAtZero: true, precision: 0 } }] } };
 
   function project_issues(data) {
     if (data && data.project_issues) {
