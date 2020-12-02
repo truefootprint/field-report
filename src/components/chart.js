@@ -8,8 +8,8 @@ import DatePicker from "react-datepicker";
 import Carousel, { Modal, ModalGateway } from "react-images";
 
 let host;
-//host = "https://field-backend.truefootprint.com";
-host = "http://localhost:3000";
+host = "https://field-backend.truefootprint.com";
+//host = "http://localhost:3000";
 // if (window.location.hostname === "localhost") {
 //   host = "http://localhost:3000";
 // } else {

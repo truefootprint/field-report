@@ -5,8 +5,8 @@ import { useHistory } from "react-router-dom";
 
 let host;
 let logged_in = false;
-//host = "https://field-backend.truefootprint.com";
-host = "http://localhost:3000";
+host = "https://field-backend.truefootprint.com";
+//host = "http://localhost:3000";
 
 function Login(props) {
   let history = useHistory();
