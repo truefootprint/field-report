@@ -17,7 +17,7 @@ function App() {
   return (
       <Router>
         <Route path="/" exact render={(props) =>  <Login {...props} setLogin={setLogin} />}/>
-        <ProtectedRoute exact path='/dashboard' login={login} component={Dashboard} />      
+        <ProtectedRoute exact path='/dashboard' setLogin={setLogin} login={login} component={Dashboard} />      
       </Router>
   );
 }

@@ -13,7 +13,8 @@ function Dashboard(props) {
   let history = useHistory();
   function handleLogout(event){
     localStorage.removeItem("token");
-    history.push("/field-report");
+    props.setLogin(false);
+    history.push("/");
   }
 
   return (
