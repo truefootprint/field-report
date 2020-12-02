@@ -16,36 +16,39 @@ function Login(props) {
     setToken(btoa(`user:${event.target.value}`)); 
   }
 
-  function handleSubmit(event){
-      console.log("WE ARE HERE");
-      console.log(token);
-      axios
+  const handleSubmit = async() =>{
+      let res = await axios
       .get(`${host}/reports/setup_report_form`, {
         headers: {
           'Authorization': `Basic ${token}`
         }
-      })
-      .then((res) => {
-        console.warn("AFTER TOKEN")
-        console.warn(res)
-        console.log(res.status === 200)
-        console.log(token)
-        if (res.status === 200) {
-          console.log("BEFORE REDIRACT");
-          localStorage.setItem("token", token);
-          //window.location.replace("/dashboard");          
-          
-          //props.history.push("/dashboard")
-        }
-        //setProgrammes(res.data.programmes);
+      }).then(data => {
+        return data;
       })
       .catch((err) => {
         console.log(err);
-      });
-      if(localStorage.getItem("token")){
-        history.push('/dashboard');
+      });       
+      if (res.status === 200) {
+        console.log("BEFORE REDIRECT");
+        props.setLogin(true);
+        localStorage.setItem("token", token);               
       }
+      props.history.push("/dashboard");
   }
+
+  // const loginClick = async() => {
+  //   let res = await axios.post('/api/users/auth', {
+  //       email: email,
+  //       password: password
+  //   }).then(data => {
+  //       return data;
+  //   })
+  //   .catch((error)=> {
+  //     console.log(error);
+  //   });
+  //   history.push("/dashboard");
+  //   localStorage.setItem("jwt-token", res.data.token);
+  // }
 
   return (
     <div className="container">

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import {Route, BrowserRouter as Router} from "react-router-dom";
 import logo from './logo.svg';
 import './App.css';
@@ -11,15 +11,13 @@ import Dashboard from './components/dashboard';
 import ProtectedRoute from './components/protected_route';
 
 function App() {
+  const [login, setLogin] = useState(false);
+
+  localStorage.removeItem("token");
   return (
       <Router>
-
-      {/* <Login />
-      <Dashboard /> */}
-      <Route path="/" exact component={Login}/>
-      <Route path="/field-report/" exact component={Login}/>
-      {/* <Route path="/dashboard" component={Dashboard}/> */}
-      <ProtectedRoute exact path='/dashboard' token={localStorage.getItem("token")} component={Dashboard} />      
+        <Route path="/" exact render={(props) =>  <Login {...props} setLogin={setLogin} />}/>
+        <ProtectedRoute exact path='/dashboard' login={login} component={Dashboard} />      
       </Router>
   );
 }
