@@ -38,7 +38,7 @@ function MultiChoiceGraph(props) {
           <br />
           <Rbs.Row>
             {props.project_activity.project_activity_graphs.map((graph) => (
-              <Rbs.Col md={4} key={graph.question_id}>
+              <Rbs.Col md={6} key={graph.question_id}>
                 {/* Bar Chart */}
                 <div className="card shadow mb-4">
                   <div className="card-header py-3">
@@ -53,7 +53,7 @@ function MultiChoiceGraph(props) {
                     />
                     <hr />
                     {graph.free_text_question && <Rbs.Button size="sm" variant="primary" onClick={() => handleShow(graph.question_id)}>
-                      View
+                      View responses
                     </Rbs.Button>}
                   </div>
                 </div>
