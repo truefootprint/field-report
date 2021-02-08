@@ -7,6 +7,11 @@
   pointer-events: none;
 }
 
+.modal-90w {
+  width: 80% !important;
+  max-width: none !important;
+}
+
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {
     animation: App-logo-spin infinite 20s linear;

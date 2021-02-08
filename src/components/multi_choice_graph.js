@@ -38,40 +38,65 @@ function MultiChoiceGraph(props) {
           <br />
           <Rbs.Row>
             {props.project_activity.project_activity_graphs.map((graph) => (
-              <Rbs.Col md={6} key={graph.question_id}>
+              <Rbs.Col md={4} key={graph.question_id}>
                 {/* Bar Chart */}
                 <div className="card shadow mb-4">
                   <div className="card-header py-3">
                     <h6 className="m-0 font-weight-bold text-primary">
-                      {graph.question_text}
-                    </h6>                    
+                      {graph.question_text}                       
+                    </h6>     
+                                 
                   </div>
                   <div className="card-body" style={{ padding: "5px" }}>
                     <HorizontalBar
                       options={options}
                       data={graph.question_reponses_graph}
                     />
-                    <hr />
+                  </div>
+                  <div className="card-footer" style={{ padding: "5px" }}>
+                  <Rbs.Row>
+                  <Rbs.Col md={3}>
+                    <Rbs.Button size="sm" variant="info" onClick={() => handleShow("graph-" + graph.question_id)}>
+                      Enlarge graph 
+                    </Rbs.Button>  
+                    </Rbs.Col>
+                    <Rbs.Col md={3}>
                     {graph.free_text_question && <Rbs.Button size="sm" variant="primary" onClick={() => handleShow(graph.question_id)}>
                       View responses
                     </Rbs.Button>}
+                    </Rbs.Col>
+                  </Rbs.Row>
                   </div>
                 </div>
                 <br />
                 <br />
-                {graph.free_text_question && <Rbs.Modal show={graph.question_id===select_id} onHide={handleClose} size="lg" centered>
+                
+                <Rbs.Modal dialogClassName="modal-90w" show={"graph-" + graph.question_id===select_id} onHide={handleClose} centered>
                   <Rbs.Modal.Header closeButton>
-                    <Rbs.Modal.Title>Responses</Rbs.Modal.Title>
+                    <Rbs.Modal.Title>{graph.question_text}</Rbs.Modal.Title>
                   </Rbs.Modal.Header>
                   <Rbs.Modal.Body>
-                    <Rbs.Table striped bordered hover responsive>                    
+                    <HorizontalBar
+                        options={options}
+                        data={graph.question_reponses_graph}
+                      />
+                  </Rbs.Modal.Body>
+                </Rbs.Modal>
+                {graph.free_text_question && <Rbs.Modal dialogClassName="modal-90w" show={graph.question_id===select_id} onHide={handleClose} centered>
+                  <Rbs.Modal.Header closeButton>
+                    <Rbs.Modal.Title>{graph.question_text}</Rbs.Modal.Title>
+                  </Rbs.Modal.Header>
+                  <Rbs.Modal.Body>
+                    <Rbs.Table striped bordered hover responsive variant="dark">
+                      <thead>
+                        <tr>
+                          <th colspan="1">User ID</th>
+                          <th colspan="5">Response</th>
+                          <th colspan="3">Date</th>
+                          <th colspan="3">Project</th>
+                        </tr>
+                      </thead>               
                       <tbody>
-                      <tr>
-                        <td colspan="1">User ID</td>
-                        <td colspan="5">Response</td>
-                        <td colspan="3"> Date</td>
-                        <td colspan="3">Project</td>
-                      </tr>
                       {graph.responses.map((response) => (
                         <tr>
                           <td  colspan="1">{response.user_id}</td>
