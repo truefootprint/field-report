@@ -8,8 +8,8 @@ import DatePicker from "react-datepicker";
 import Carousel, { Modal, ModalGateway } from "react-images";
 
 let host;
-host = "https://field-backend.truefootprint.com";
-//host = "http://localhost:3000";
+//host = "https://field-backend.truefootprint.com";
+host = "http://localhost:3000";
 // if (window.location.hostname === "localhost") {
 //   host = "http://localhost:3000";
 // } else {
@@ -297,9 +297,8 @@ function Chart() {
       <br />
 
       {project_issues(data)}
-
       {data.activity &&
-        data.activity.map((project_activity) => (
+        data.activity.sort((a, b) => (a.activity_order > b.activity_order) ? 1 : -1).map((project_activity) => (
           <MultiChoiceGraph
             key={project_activity.project_activity_name}
             project_activity={project_activity}
