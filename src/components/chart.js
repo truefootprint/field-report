@@ -391,7 +391,7 @@ function Chart() {
               />
             ))} */}
           <Container fluid>
-            {/* <Row>{renderPhotos(data, photos)}</Row> */}
+            <Row>{renderPhotos(data, photos)}</Row>
             <Row>{renderIssuePhotos(data, issue_photos)}</Row>
           </Container>
         </div>
