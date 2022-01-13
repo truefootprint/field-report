@@ -17,8 +17,8 @@ import Carousel, { Modal, ModalGateway } from "react-images";
 import ImagePagination from "./pagination.js";
 
 let host;
-//host = "https://field-backend.truefootprint.com";
-host = "http://localhost:3000";
+host = "https://field-backend.truefootprint.com";
+//host = "http://localhost:3000";
 // if (window.location.hostname === "localhost") {
 //   host = "http://localhost:3000";
 // } else {
