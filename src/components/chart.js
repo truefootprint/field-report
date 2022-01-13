@@ -381,7 +381,7 @@ function Chart() {
       )}
       {data && data.activity && (
         <div>
-          {/* {project_issues(data)}
+          {project_issues(data)}
           {data.activity
             .sort((a, b) => (a.activity_order > b.activity_order ? 1 : -1))
             .map((project_activity) => (
@@ -389,7 +389,7 @@ function Chart() {
                 key={project_activity.project_activity_name}
                 project_activity={project_activity}
               />
-            ))} */}
+            ))}
           <Container fluid>
             <Row>{renderPhotos(data, photos)}</Row>
             <Row>{renderIssuePhotos(data, issue_photos)}</Row>
