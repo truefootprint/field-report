@@ -10,10 +10,12 @@ import {
   Container,
   Form,
   FormControl,
+  Modal,
   Button,
+  Table,  
 } from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import Carousel, { Modal, ModalGateway } from "react-images";
+import Carousel, { Modal as ModalCarousel, ModalGateway } from "react-images";
 import ImagePagination from "./pagination.js";
 
 let host;
@@ -50,6 +52,11 @@ function Chart() {
     setCurrentIssuesImage(0);
     setIssuesViewerIsOpen(false);
   };
+
+  const [select_id, setSelectedId] = useState(0);
+
+  const handleClose = () => setSelectedId(0);
+  const handleShow = (id) => setSelectedId(id);
 
   const [data, setData] = useState({});
   const [photos, setPhotos] = useState([]);
@@ -172,6 +179,8 @@ function Chart() {
   };
 
   function project_issues(data) {
+    console.log("data.project_issues");
+    console.log(data.project_issues);
     if (data && data.project_issues) {
       return (
         <Col md={4}>
@@ -179,11 +188,20 @@ function Chart() {
             <div className="card-header py-3">
               <h6 className="m-0 font-weight-bold text-primary">
                 Issues Reported
-              </h6>
+              </h6>              
             </div>
             <div className="card-body">
               <HorizontalBar data={data.project_issues} options={options} />
             </div>
+            <div className="card-footer" style={{ padding: "5px" }}>
+                    <Row>
+                      <Col md={3}>
+                      {data.project_issues.actual_issues && <Button size="sm" variant="primary" onClick={() => handleShow("1")}>
+                      View issues
+              </Button>}
+                      </Col>
+                    </Row>
+                  </div>
           </div>
         </Col>
       );
@@ -191,8 +209,6 @@ function Chart() {
   }
 
   function renderPhotos(data, photos) {
-    console.log("DATA");
-    console.log(data);
     if (data && photos) {
       return (
         <Col>
@@ -211,7 +227,7 @@ function Chart() {
               />
               <ModalGateway>
                 {viewerIsOpen ? (
-                  <Modal onClose={closeLightbox}>
+                  <ModalCarousel onClose={closeLightbox}>
                     <Carousel
                       currentIndex={currentImage}
                       views={photos.map((x) => ({
@@ -220,7 +236,7 @@ function Chart() {
                         caption: x.text, //x.title,
                       }))}
                     />
-                  </Modal>
+                  </ModalCarousel>
                 ) : null}
               </ModalGateway>
             </div>
@@ -253,7 +269,7 @@ function Chart() {
               />
               <ModalGateway>
                 {viewerIssuesIsOpen ? (
-                  <Modal onClose={closeIssuesLightbox}>
+                  <ModalCarousel onClose={closeIssuesLightbox}>
                     <Carousel
                       currentIndex={currentIssuesImage}
                       views={issue_photos.map((x) => ({
@@ -262,7 +278,7 @@ function Chart() {
                         caption: x.text, //x.title,
                       }))}
                     />
-                  </Modal>
+                  </ModalCarousel>
                 ) : null}
               </ModalGateway>
             </div>
@@ -396,6 +412,39 @@ function Chart() {
           </Container>
         </div>
       )}
+      {data && data.project_issues &&
+      <Modal dialogClassName="modal-90w" show={"1"===select_id} onHide={handleClose} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Project Issues</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+        <Table striped bordered hover responsive variant="dark">
+          <thead>
+            <tr>
+            <th colspan="3">Question</th>
+              <th colspan="1">Issue ID</th>
+              <th colspan="4">Resolved</th>
+              <th colspan="3">User ID</th>
+              <th colspan="3">Note</th>
+              <th colspan="3">Date</th>
+            </tr>
+          </thead>               
+          <tbody>
+          {data.project_issues.actual_issues.map((issue) => (
+            <tr>
+              <td colspan="3">{issue.project_question_text}</td>
+              <td  colspan="1">{issue.issue_id}</td>
+              <td  colspan="4">{issue.resolved ? 'Resolved' : 'Not resolved'}</td>
+              <td  colspan="3">{issue.user_id}</td>
+              <td colspan="3">{issue.note}</td>
+              <td colspan="3">{issue.date}</td>
+            </tr>
+          ))}   
+          </tbody>
+        </Table>
+        </Modal.Body>
+      </Modal>
+      }
     </div>
   );
 }
