@@ -86,7 +86,7 @@ function MultiChoiceGraph(props) {
                           </Button>                        
                       </Col>
                       )}
-                      {(graph.issue_notes.length != 0) && (
+                      {(graph.issue_notes && graph.issue_notes.length != 0) && (
                       <Col md={3}>
                         
                           <Button
@@ -103,7 +103,7 @@ function MultiChoiceGraph(props) {
                 </div>
                 <br />
                 <br />
-                {(graph.issue_notes.length != 0) && (
+                {(graph.issue_notes && graph.issue_notes.length != 0) && (
                   <Modal
                     dialogClassName="modal-90w"
                     show={"issues-" + graph.question_id === select_id}
