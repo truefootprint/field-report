@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import MultiChoiceGraph from "./multi_choice_graph.js";
+import MultiChoiceGraph from "../multi_choice_graph";
 import axios from "axios";
 import { HorizontalBar } from "react-chartjs-2";
 import Gallery from "react-photo-gallery";
@@ -15,7 +15,6 @@ export default function ImagePagination({ requestNextImages, photo_count, whichP
   const [active, setActive] = useState(1);
   
   function pageItems(requestNextImages, photo_count, whichPage) {
-    //let active = 1;
     let items = [];
     console.log("photo count");
     console.log(photo_count);

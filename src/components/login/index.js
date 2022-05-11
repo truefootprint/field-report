@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 import axios from 'axios';
 import { useHistory } from "react-router-dom";
 
-
 let host;
 let logged_in = false;
-host = "https://field-backend.truefootprint.com";
-//host = "http://localhost:3000";
+//host = "https://field-backend.truefootprint.com";
+host = "http://localhost:3000";
 
 function Login(props) {
   let history = useHistory();

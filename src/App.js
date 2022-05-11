@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from "react";
+import './App.css';
 import {Route, BrowserRouter as Router} from "react-router-dom";
 import logo from './logo.svg';
-import './App.css';
-import Login from "./components/login.js"
+import Login from "./components/login"
 import * as Rbs from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-//import './all.min.css';
 import './sb-admin-2.css';
 import Dashboard from './components/dashboard';
-import ProtectedRoute from './components/protected_route';
+import ProtectedRoute from './components/login/protected_route';
 
 function App() {
   const [login, setLogin] = useState(false);

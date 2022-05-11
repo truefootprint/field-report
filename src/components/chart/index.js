@@ -1,45 +1,19 @@
 import React, { useState, useEffect, useCallback } from "react";
-import MultiChoiceGraph from "./multi_choice_graph.js";
-import axios from "axios";
+import { Col, Row, Spinner, Container, Form, FormControl, Modal, Button, Table } from "react-bootstrap";
+import Carousel, { Modal as ModalCarousel, ModalGateway } from "react-images";
+import axios from 'axios';
+import MultiChoiceGraph from "../multi_choice_graph";
+import ResponsePhotos from "../response_photos";
 import { HorizontalBar } from "react-chartjs-2";
 import Gallery from "react-photo-gallery";
-import {
-  Col,
-  Row,
-  Spinner,
-  Container,
-  Form,
-  FormControl,
-  Modal,
-  Button,
-  Table,  
-} from "react-bootstrap";
 import DatePicker from "react-datepicker";
-import Carousel, { Modal as ModalCarousel, ModalGateway } from "react-images";
-import ImagePagination from "./pagination.js";
+import ImagePagination from "../pagination";
 
 let host;
-host = "https://field-backend.truefootprint.com";
-//host = "http://localhost:3000";
-// if (window.location.hostname === "localhost") {
-//   host = "http://localhost:3000";
-// } else {
-//   host = "https://field-backend.truefootprint.com";
-// }
+//host = "https://field-backend.truefootprint.com";
+host = "http://localhost:3000";
+
 function Chart() {
-  const [currentImage, setCurrentImage] = useState(0);
-  const [viewerIsOpen, setViewerIsOpen] = useState(false);
-
-  const openLightbox = useCallback((event, { photo, index }) => {
-    setCurrentImage(index);
-    setViewerIsOpen(true);
-  }, []);
-
-  const closeLightbox = () => {
-    setCurrentImage(0);
-    setViewerIsOpen(false);
-  };
-
   const [currentIssuesImage, setCurrentIssuesImage] = useState(0);
   const [viewerIssuesIsOpen, setIssuesViewerIsOpen] = useState(false);
 
@@ -124,10 +98,6 @@ function Chart() {
     setSelectedValues({ ...selectedValues, project_id: event.target.value });
   }
 
-  function handleChange(event) {
-    //this.setState({[event.target.name]: event.target.value});
-  }
-
   function selectProgrammeHandler(event) {
     setSelectedValues({ ...selectedValues, programme_id: event.target.value });
     // get all projects for this programme selected
@@ -170,7 +140,6 @@ function Chart() {
         } else {
           setIssuePhotos(res.data.issue_photos);
         }
-        //setPhotos(res.data.projects.sort((a, b) => a.name.localeCompare(b.name)));
       });
   }
 
@@ -211,37 +180,7 @@ function Chart() {
   function renderPhotos(data, photos) {
     if (data && photos) {
       return (
-        <Col>
-          <div className="card shadow mb-4">
-            <div className="card-header py-3">
-              <h6 className="m-0 font-weight-bold text-primary">
-                Gallery (reponses)
-              </h6>
-            </div>
-            <div className="card-body">
-              <Gallery photos={photos} onClick={openLightbox}/>
-              <hr/>
-              <ImagePagination
-                requestNextImages={requestNextImages}
-                photo_count={data.photos_count}
-              />
-              <ModalGateway>
-                {viewerIsOpen ? (
-                  <ModalCarousel onClose={closeLightbox}>
-                    <Carousel
-                      currentIndex={currentImage}
-                      views={photos.map((x) => ({
-                        ...x,
-                        srcset: "hello", //x.srcSet,
-                        caption: x.text, //x.title,
-                      }))}
-                    />
-                  </ModalCarousel>
-                ) : null}
-              </ModalGateway>
-            </div>
-          </div>
-        </Col>
+        <ResponsePhotos photos={photos} data={data} requestNextImages={requestNextImages}/>
       );
     }
   }
