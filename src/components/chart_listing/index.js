@@ -14,7 +14,7 @@ let host;
 //host = "https://field-backend.truefootprint.com";
 host = "http://localhost:3000";
 
-function Chart() {
+function ChartListing() {
   const [currentIssuesImage, setCurrentIssuesImage] = useState(0);
   const [viewerIssuesIsOpen, setIssuesViewerIsOpen] = useState(false);
 
@@ -308,4 +308,4 @@ function Chart() {
   );
 }
 
-export default Chart;
+export default ChartListing;

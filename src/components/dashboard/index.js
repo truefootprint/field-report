@@ -1,5 +1,5 @@
 import React from "react";
-import Chart from "../chart";
+import ChartListing from "../chart_listing";
 import TopNavBar from "./top_nav_bar";
 import * as Rbs from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -44,7 +44,7 @@ function Dashboard(props) {
         <div id="content">
           <TopNavBar handleLogout={handleLogout} />
           <div className="container-fluid">
-            <Chart />
+            <ChartListing />
           </div>
         </div>
         <footer className="sticky-footer bg-white">
