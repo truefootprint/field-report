@@ -4,8 +4,8 @@ import { Col, Row, Spinner, Container, Form, FormControl, Modal, Button, Table }
 import Gallery from "react-photo-gallery";
 import Carousel, { Modal as ModalCarousel, ModalGateway } from "react-images";
 
-function ResponsePhotos({responses, photos, data, requestNextImages}) {
-
+function ResponsePhotos({responses, photos, data, requestNextImages}) {  
+    
     const [currentImage, setCurrentImage] = useState(0);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
   

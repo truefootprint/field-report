@@ -4,7 +4,8 @@ import Carousel, { Modal as ModalCarousel, ModalGateway } from "react-images";
 import axios from 'axios';
 import SelectionPanel from "./selection_panel";
 import MultiChoiceGraph from "../multi_choice_graph";
-import ResponsePhotos from "../response_photos";
+import ResponsePhotos from "../gallery/response_photos";
+import IssuePhotos from "../gallery/issue_photos";
 import { HorizontalBar } from "react-chartjs-2";
 import Gallery from "react-photo-gallery";
 import DatePicker from "react-datepicker";
@@ -15,19 +16,6 @@ let host;
 host = "http://localhost:3000";
 
 function ChartListing() {
-  const [currentIssuesImage, setCurrentIssuesImage] = useState(0);
-  const [viewerIssuesIsOpen, setIssuesViewerIsOpen] = useState(false);
-
-  const openIssuesLightbox = useCallback((event, { photo, index }) => {
-    setCurrentIssuesImage(index);
-    setIssuesViewerIsOpen(true);
-  }, []);
-
-  const closeIssuesLightbox = () => {
-    setCurrentIssuesImage(0);
-    setIssuesViewerIsOpen(false);
-  };
-
   const [select_id, setSelectedId] = useState(0);
 
   const handleClose = () => setSelectedId(0);
@@ -189,41 +177,7 @@ function ChartListing() {
   function renderIssuePhotos(data, issue_photos) {
     if (data && issue_photos) {
       return (
-        <Col>
-          <div className="card shadow mb-4">
-            <div className="card-header py-3">
-              <h6 className="m-0 font-weight-bold text-primary">
-                Gallery (Issues)
-              </h6>
-            </div>
-            <div className="card-body">
-              <Gallery
-                photos={issue_photos}
-                onClick={openIssuesLightbox}
-              />
-              <hr/>
-              <ImagePagination
-                requestNextImages={requestNextImages}
-                photo_count={data.issue_photos_count}
-                whichPage={"issues"}
-              />
-              <ModalGateway>
-                {viewerIssuesIsOpen ? (
-                  <ModalCarousel onClose={closeIssuesLightbox}>
-                    <Carousel
-                      currentIndex={currentIssuesImage}
-                      views={issue_photos.map((x) => ({
-                        ...x,
-                        srcset: "hello", //x.srcSet,
-                        caption: x.text, //x.title,
-                      }))}
-                    />
-                  </ModalCarousel>
-                ) : null}
-              </ModalGateway>
-            </div>
-          </div>
-        </Col>
+        <IssuePhotos photos={issue_photos} data={data} requestNextImages={requestNextImages}/>
       );
     }
   }
