@@ -1,15 +1,23 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Col, Row, Spinner, Container, Form, FormControl, Modal, Button, Table } from "react-bootstrap";
-import Carousel, { Modal as ModalCarousel, ModalGateway } from "react-images";
-import axios from 'axios';
+import {
+  Col,
+  Row,
+  Spinner,
+  Container,
+  Form,
+  FormControl,
+  Modal,
+  Button,
+  Table,
+} from "react-bootstrap";
+import axios from "axios";
 import SelectionPanel from "./selection_panel";
+import ProjectIssueGraph from "./project_issue_graph";
 import MultiChoiceGraph from "../multi_choice_graph";
 import ResponsePhotos from "../gallery/response_photos";
 import IssuePhotos from "../gallery/issue_photos";
-import { HorizontalBar } from "react-chartjs-2";
-import Gallery from "react-photo-gallery";
-import DatePicker from "react-datepicker";
-import ImagePagination from "../pagination";
+import IssueModal from "./issue_modal";
+import { Waypoint } from "react-waypoint";
 
 let host;
 //host = "https://field-backend.truefootprint.com";
@@ -21,9 +29,15 @@ function ChartListing() {
   const handleClose = () => setSelectedId(0);
   const handleShow = (id) => setSelectedId(id);
 
+  const [test, setTest] = useState(false);
+  const [showWayPoint, setShowWayPoint] = useState(false);
+  const [showResponsePhotos, setShowResponsePhotos] = useState(false);
+  const [showIssuePhotos, setShowIssuePhotos] = useState(false);
   const [data, setData] = useState({});
   const [photos, setPhotos] = useState([]);
-  const [issue_photos, setIssuePhotos] = useState([]);
+  const [photosCount, setPhotosCount] = useState(0);
+  const [issuePhotos, setIssuePhotos] = useState([]);
+  const [issuePhotosCount, setIssuePhotosCount] = useState([]);
   const [programmes, setProgrammes] = useState([]);
   const [projects, setProjects] = useState([]);
   const [spinner, setSpinner] = useState(false);
@@ -71,10 +85,6 @@ function ChartListing() {
       .then((res) => {
         setSpinner(false);
         setData(res.data);
-        console.log("WHAT IS IN DATA PHOTOS");
-        console.log(res.data);
-        setPhotos(res.data.photos);
-        setIssuePhotos(res.data.issue_photos);
       })
       .catch((err) => {
         console.log(err);
@@ -104,8 +114,8 @@ function ChartListing() {
       });
   }
 
-  function requestNextImages(offset, limit, whichPage) {
-    console.log("-----requestNextImages-----")
+  function requestIntialImages(offset, limit, whichPage) {
+    console.log("-----requestINTIALIMAGES-----");
     let request = {
       project_id: document.getElementById("project-select").value,
       programme_id: document.getElementById("programme-select").value,
@@ -113,7 +123,7 @@ function ChartListing() {
       endDate: document.getElementById("end-date-select").value,
       offset: offset,
       limit: limit,
-      whichPage: whichPage
+      whichPage: whichPage,
     };
     axios
       .get(`${host}/reports/photos`, {
@@ -124,7 +134,39 @@ function ChartListing() {
         console.log("WHATS IN MY RES?");
         console.log(res);
         console.log(whichPage);
-        if(whichPage=='responses'){
+        if (whichPage == "responses") {
+          setShowResponsePhotos(true);
+          setPhotosCount(res.data.photos_count);
+          setPhotos(res.data.photos);
+        } else {
+          setShowIssuePhotos(true);
+          setIssuePhotosCount(res.data.issue_photos_count);
+          setIssuePhotos(res.data.issue_photos);
+        }
+      });
+  }
+
+  function requestNextImages(offset, limit, whichPage) {
+    console.log("-----requestNextImages-----");
+    let request = {
+      project_id: document.getElementById("project-select").value,
+      programme_id: document.getElementById("programme-select").value,
+      startDate: document.getElementById("start-date-select").value,
+      endDate: document.getElementById("end-date-select").value,
+      offset: offset,
+      limit: limit,
+      whichPage: whichPage,
+    };
+    axios
+      .get(`${host}/reports/photos`, {
+        headers: { Authorization: `Basic ${localStorage.getItem("token")}` },
+        params: request,
+      })
+      .then((res) => {
+        console.log("WHATS IN MY RES?");
+        console.log(res);
+        console.log(whichPage);
+        if (whichPage == "responses") {
           setPhotos(res.data.photos);
         } else {
           setIssuePhotos(res.data.issue_photos);
@@ -136,58 +178,15 @@ function ChartListing() {
     scales: { xAxes: [{ ticks: { beginAtZero: true, precision: 0 } }] },
   };
 
-  function project_issues(data) {
-    console.log("data.project_issues");
-    console.log(data.project_issues);
-    if (data && data.project_issues) {
-      return (
-        <Col md={4}>
-          <div className="card shadow mb-4">
-            <div className="card-header py-3">
-              <h6 className="m-0 font-weight-bold text-primary">
-                Issues Reported
-              </h6>              
-            </div>
-            <div className="card-body">
-              <HorizontalBar data={data.project_issues} options={options} />
-            </div>
-            <div className="card-footer" style={{ padding: "5px" }}>
-                    <Row>
-                      <Col md={3}>
-                      {data.project_issues.actual_issues && <Button size="sm" variant="primary" onClick={() => handleShow("1")}>
-                      View issues
-              </Button>}
-                      </Col>
-                    </Row>
-                  </div>
-          </div>
-        </Col>
-      );
-    }
-  }
-
-  function renderPhotos(data, photos) {
-    if (data && photos) {
-      return (
-        <ResponsePhotos photos={photos} data={data} requestNextImages={requestNextImages}/>
-      );
-    }
-  }
-
-  function renderIssuePhotos(data, issue_photos) {
-    if (data && issue_photos) {
-      return (
-        <IssuePhotos photos={issue_photos} data={data} requestNextImages={requestNextImages}/>
-      );
-    }
-  }
-
   return (
     <div>
-      <SelectionPanel programmes={programmes} 
-      projects={projects} selectProgrammeHandler={selectProgrammeHandler} 
-      selectProjectHandler={selectProjectHandler} handleGenerateReport={handleGenerateReport}/>
-
+      <SelectionPanel
+        programmes={programmes}
+        projects={projects}
+        selectProgrammeHandler={selectProgrammeHandler}
+        selectProjectHandler={selectProjectHandler}
+        handleGenerateReport={handleGenerateReport}
+      />
       <Row>
         <Col>
           <h3>
@@ -200,64 +199,74 @@ function ChartListing() {
       <br />
       {spinner && (
         <Row>
-          <br/><br/>
+          <br />
+          <br />
           <Col md={{ span: 3, offset: 5 }}>
-            <Spinner animation="border" variant="primary" />&nbsp;
-            {/* <Spinner animation="border" variant="primary" />&nbsp;
-            <Spinner animation="border" variant="primary" /> */}
+            <Spinner animation="border" variant="primary" />
+            &nbsp;
           </Col>
         </Row>
       )}
       {data && data.activity && (
         <div>
-          {project_issues(data)}
+          <ProjectIssueGraph
+            renderIf={data && data.project_issues}
+            handleShow={handleShow}
+            data={data}
+            options={options}
+          />
           {data.activity
             .sort((a, b) => (a.activity_order > b.activity_order ? 1 : -1))
-            .map((project_activity) => (
-              <MultiChoiceGraph
-                key={project_activity.project_activity_name}
-                project_activity={project_activity}
-              />
-            ))}
+            .map((project_activity, index) => {
+              return (
+                <MultiChoiceGraph
+                  key={project_activity.project_activity_name}
+                  project_activity={project_activity}
+                />
+              );
+            })}
           <Container fluid>
-            <Row>{renderPhotos(data, photos)}</Row>
-            <Row>{renderIssuePhotos(data, issue_photos)}</Row>
+            <Row>
+              {showResponsePhotos && data && photos && (
+                <ResponsePhotos
+                  photos={photos}
+                  photosCount={photosCount}
+                  requestNextImages={requestNextImages}
+                />
+              )}
+              {showIssuePhotos && data && issuePhotos && (
+                <IssuePhotos
+                  issuePhotos={issuePhotos}
+                  issuePhotosCount={issuePhotosCount}
+                  requestNextImages={requestNextImages}
+                />
+              )}
+            </Row>
           </Container>
         </div>
       )}
-      {data && data.project_issues &&
-      <Modal dialogClassName="modal-90w" show={"1"===select_id} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>Project Issues</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-        <Table striped bordered hover responsive variant="dark">
-          <thead>
-            <tr>
-            <th colspan="3">Question</th>
-              <th colspan="1">Issue ID</th>
-              <th colspan="4">Resolved</th>
-              <th colspan="3">User ID</th>
-              <th colspan="3">Note</th>
-              <th colspan="3">Date</th>
-            </tr>
-          </thead>               
-          <tbody>
-          {data.project_issues.actual_issues.map((issue) => (
-            <tr>
-              <td colspan="3">{issue.project_question_text}</td>
-              <td  colspan="1">{issue.issue_id}</td>
-              <td  colspan="4">{issue.resolved ? 'Resolved' : 'Not resolved'}</td>
-              <td  colspan="3">{issue.user_id}</td>
-              <td colspan="3">{issue.note}</td>
-              <td colspan="3">{issue.date}</td>
-            </tr>
-          ))}   
-          </tbody>
-        </Table>
-        </Modal.Body>
-      </Modal>
-      }
+      {data && data.project_issues && (
+        <IssueModal
+          select_id={select_id}
+          handleClose={handleClose}
+          data={data}
+        />
+      )}
+      {data && data.activity && (
+        <Waypoint
+          scrollableAncestor={window}
+          topOffset={"96%"}
+          onEnter={function (props) {
+            // Fetch images
+            if (!showResponsePhotos) {
+              requestIntialImages(0, 10, "responses");
+            }
+            if (!showIssuePhotos) {
+              requestIntialImages(0, 10, "issues");
+            }
+          }}
+        />
+      )}
     </div>
   );
 }

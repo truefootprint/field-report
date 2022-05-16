@@ -4,7 +4,7 @@ import { Col, Row, Spinner, Container, Form, FormControl, Modal, Button, Table }
 import Gallery from "react-photo-gallery";
 import Carousel, { Modal as ModalCarousel, ModalGateway } from "react-images";
 
-function IssuePhotos({responses, issue_photos, data, requestNextImages}) {
+function IssuePhotos({issuePhotos, data, issuePhotosCount, requestNextImages}) {
     const [currentIssuesImage, setCurrentIssuesImage] = useState(0);
     const [viewerIssuesIsOpen, setIssuesViewerIsOpen] = useState(false);
   
@@ -27,11 +27,11 @@ function IssuePhotos({responses, issue_photos, data, requestNextImages}) {
           </h6>
         </div>
         <div className="card-body">
-          <Gallery photos={issue_photos} onClick={openIssuesLightbox} />
+          <Gallery photos={issuePhotos} onClick={openIssuesLightbox} />
           <hr />
           <ImagePagination
             requestNextImages={requestNextImages}
-            photo_count={data.issue_photos_count}
+            photosCount={issuePhotosCount}
             whichPage={"issues"}
           />
           <ModalGateway>
@@ -39,7 +39,7 @@ function IssuePhotos({responses, issue_photos, data, requestNextImages}) {
               <ModalCarousel onClose={closeIssuesLightbox}>
                 <Carousel
                   currentIndex={currentIssuesImage}
-                  views={issue_photos.map((x) => ({
+                  views={issuePhotos.map((x) => ({
                     ...x,
                     srcset: "hello", //x.srcSet,
                     caption: x.text, //x.title,

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Waypoint } from "react-waypoint";
 import { HorizontalBar } from "react-chartjs-2";
 import DatePicker from "react-datepicker";
 import {
@@ -11,7 +12,7 @@ import {
   FormControl,
   Modal,
   Button,
-  Table,  
+  Table,
 } from "react-bootstrap";
 
 function MultiChoiceGraph(props) {
@@ -46,7 +47,7 @@ function MultiChoiceGraph(props) {
         <Col>
           <h3> Activity: {props.project_activity.project_activity_name} </h3>
           <br />
-          <Row>
+          <Row  style={{ height: "100%" }}>
             {props.project_activity.project_activity_graphs.map((graph) => (
               <Col md={4} key={graph.question_id}>
                 {/* Bar Chart */}
@@ -76,34 +77,35 @@ function MultiChoiceGraph(props) {
                         </Button>
                       </Col>
                       {graph.free_text_question && (
-                      <Col md={3}>                        
+                        <Col md={3}>
                           <Button
                             size="sm"
                             variant="primary"
                             onClick={() => handleShow(graph.question_id)}
                           >
                             View responses
-                          </Button>                        
-                      </Col>
+                          </Button>
+                        </Col>
                       )}
-                      {(graph.issue_notes && graph.issue_notes.length != 0) && (
-                      <Col md={3}>
-                        
+                      {graph.issue_notes && graph.issue_notes.length != 0 && (
+                        <Col md={3}>
                           <Button
                             size="sm"
                             variant="primary"
-                            onClick={() => handleShow("issues-" + graph.question_id)}
+                            onClick={() =>
+                              handleShow("issues-" + graph.question_id)
+                            }
                           >
                             View issues ({graph.issue_notes_count})
-                          </Button>                        
-                      </Col>
+                          </Button>
+                        </Col>
                       )}
                     </Row>
                   </div>
                 </div>
                 <br />
                 <br />
-                {(graph.issue_notes && graph.issue_notes.length != 0) && (
+                {graph.issue_notes && graph.issue_notes.length != 0 && (
                   <Modal
                     dialogClassName="modal-90w"
                     show={"issues-" + graph.question_id === select_id}
@@ -111,7 +113,11 @@ function MultiChoiceGraph(props) {
                     centered
                   >
                     <Modal.Header closeButton>
-                      <Modal.Title> {graph.issue_notes_count} issues for "{graph.question_text}"</Modal.Title>
+                      <Modal.Title>
+                        {" "}
+                        {graph.issue_notes_count} issues for "
+                        {graph.question_text}"
+                      </Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
                       <Table striped bordered hover responsive variant="dark">
@@ -128,7 +134,9 @@ function MultiChoiceGraph(props) {
                           {graph.issue_notes.map((issue) => (
                             <tr>
                               <td colspan="1">{issue.issue_id}</td>
-                              <td colspan="5">{issue.resolved ? 'Resolved' : 'Not resolved'}</td>
+                              <td colspan="5">
+                                {issue.resolved ? "Resolved" : "Not resolved"}
+                              </td>
                               <td colspan="3">{issue.user_id}</td>
                               <td colspan="3">{issue.note}</td>
                               <td colspan="3">{issue.date}</td>
@@ -167,13 +175,7 @@ function MultiChoiceGraph(props) {
                       <Modal.Title>{graph.question_text}</Modal.Title>
                     </Modal.Header>
                     <Modal.Body>
-                      <Table
-                        striped
-                        bordered
-                        hover
-                        responsive
-                        variant="dark"
-                      >
+                      <Table striped bordered hover responsive variant="dark">
                         <thead>
                           <tr>
                             <th colspan="1">User ID</th>
@@ -198,6 +200,23 @@ function MultiChoiceGraph(props) {
                 )}
               </Col>
             ))}
+            {/* {props.lastOne && (
+              <Waypoint
+                debug={true}
+                scrollableAncestor={window}
+                topOffset={"95%"}
+                onEnter={function (props) {
+                  alert("Yes");
+                  //alert(props.currentPosition);
+                  //setTimeout(setTest(true), 5000);
+
+                  // here you can use `props.currentPosition`, `props.previousPosition`, and
+                  // `props.event`
+                }}
+              >
+                <div>last</div>
+              </Waypoint>
+            )} */}
           </Row>
         </Col>
       </Row>

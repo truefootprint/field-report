@@ -4,7 +4,7 @@ import { Col, Row, Spinner, Container, Form, FormControl, Modal, Button, Table }
 import Gallery from "react-photo-gallery";
 import Carousel, { Modal as ModalCarousel, ModalGateway } from "react-images";
 
-function ResponsePhotos({responses, photos, data, requestNextImages}) {  
+function ResponsePhotos({responses, photos, photosCount, requestNextImages}) {  
     
     const [currentImage, setCurrentImage] = useState(0);
     const [viewerIsOpen, setViewerIsOpen] = useState(false);
@@ -32,7 +32,7 @@ function ResponsePhotos({responses, photos, data, requestNextImages}) {
               <hr/>
               <ImagePagination
                 requestNextImages={requestNextImages}
-                photo_count={data.photos_count}
+                photosCount={photosCount}
               />
               <ModalGateway>
                 {viewerIsOpen ? (

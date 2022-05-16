@@ -11,22 +11,29 @@ function me() {
   alert("me");
 }
 
-export default function ImagePagination({ requestNextImages, photo_count, whichPage="responses" }) {
+export default function ImagePagination({
+  requestNextImages,
+  photosCount,
+  whichPage = "responses",
+}) {
   const [active, setActive] = useState(1);
-  
-  function pageItems(requestNextImages, photo_count, whichPage) {
+
+  function pageItems(requestNextImages, photosCount, whichPage) {
     let items = [];
     console.log("photo count");
-    console.log(photo_count);
-    let ceil = Math.ceil((photo_count/10));
+    console.log(photosCount);
+    let ceil = Math.ceil(photosCount / 10);
     for (let number = 1; number <= ceil; number++) {
       console.log("INSIDE PAGE ITEMS");
-      let offset = (number - 1)*(10)
+      let offset = (number - 1) * 10;
       items.push(
         <Rbs.Pagination.Item
           key={number}
           active={number === active}
-          onClick={() => {requestNextImages(offset, 10, whichPage); setActive(number)}}
+          onClick={() => {
+            requestNextImages(offset, 10, whichPage);
+            setActive(number);
+          }}
         >
           {number}
         </Rbs.Pagination.Item>
@@ -34,10 +41,15 @@ export default function ImagePagination({ requestNextImages, photo_count, whichP
     }
     return items;
   }
-
-  return (
-    <div>
-      <Rbs.Pagination>{pageItems(requestNextImages, photo_count, whichPage)}</Rbs.Pagination>
-    </div>
-  );
+  if (photosCount < 10) {
+    return null;
+  } else {
+    return (
+      <div>
+        <Rbs.Pagination>
+          {pageItems(requestNextImages, photosCount, whichPage)}
+        </Rbs.Pagination>
+      </div>
+    );
+  }
 }
