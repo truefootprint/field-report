@@ -112,11 +112,11 @@ function ChartListing({ handleGenerateReport, data, spinner }) {
       })
       .then((res) => {
         setLoadingImages(false);
-        if (whichPage == "responses") {
+        if (whichPage == "responses" && res.data.photos_count != 0) {
           setShowResponsePhotos(true);
           setPhotosCount(res.data.photos_count);
           setPhotos(res.data.photos);
-        } else {
+        } else if (whichPage == "issues" && res.data.issue_photos_count != 0){
           setShowIssuePhotos(true);
           setIssuePhotosCount(res.data.issue_photos_count);
           setIssuePhotos(res.data.issue_photos);
