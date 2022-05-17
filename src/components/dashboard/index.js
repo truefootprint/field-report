@@ -60,7 +60,11 @@ function Dashboard(props) {
   function setLocale(locale) {
     //localStorage.removeItem("locale");
     localStorage.setItem("locale", locale);
-    handleGenerateReport();
+    console.log("DATA?");
+    console.log(data);
+    if (Object.keys(data).length) {
+      handleGenerateReport();
+    }
   }
 
   let history = useHistory();
