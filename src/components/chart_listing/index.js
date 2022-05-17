@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
+import translate from "../../helpers/translate"
 import {
   Col,
   Row,
@@ -23,7 +24,7 @@ let host;
 //host = "https://field-backend.truefootprint.com";
 host = "http://localhost:3000";
 
-function ChartListing() {
+function ChartListing({handleGenerateReport, data, setData}) {
   const [select_id, setSelectedId] = useState(0);
 
   const handleClose = () => setSelectedId(0);
@@ -33,14 +34,14 @@ function ChartListing() {
   const [showWayPoint, setShowWayPoint] = useState(false);
   const [showResponsePhotos, setShowResponsePhotos] = useState(false);
   const [showIssuePhotos, setShowIssuePhotos] = useState(false);
-  const [data, setData] = useState({});
+
   const [photos, setPhotos] = useState([]);
   const [photosCount, setPhotosCount] = useState(0);
   const [issuePhotos, setIssuePhotos] = useState([]);
   const [issuePhotosCount, setIssuePhotosCount] = useState([]);
   const [programmes, setProgrammes] = useState([]);
   const [projects, setProjects] = useState([]);
-  const [spinner, setSpinner] = useState(false);
+
 
   const [selectedValues, setSelectedValues] = useState({
     project_id: "",
@@ -52,7 +53,8 @@ function ChartListing() {
   useEffect(() => {
     axios
       .get(`${host}/reports/setup_report_form`, {
-        headers: { Authorization: `Basic ${localStorage.getItem("token")}` },
+        headers: { Authorization: `Basic ${localStorage.getItem("token")}`, 
+        "Accept-Language": `${localStorage.getItem("locale")}` },
       })
       .then((res) => {
         setProgrammes(
@@ -68,28 +70,6 @@ function ChartListing() {
       .slice(0, 10);
   }, []); // END OF USE EFFECT FOR INTIAL LOAD
 
-  function handleGenerateReport() {
-    setSpinner(true);
-    setData({});
-    let request = {
-      project_id: document.getElementById("project-select").value,
-      programme_id: document.getElementById("programme-select").value,
-      startDate: document.getElementById("start-date-select").value,
-      endDate: document.getElementById("end-date-select").value,
-    };
-    axios
-      .get(`${host}/reports/99`, {
-        headers: { Authorization: `Basic ${localStorage.getItem("token")}` },
-        params: request,
-      })
-      .then((res) => {
-        setSpinner(false);
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
 
   function selectProjectHandler(event) {
     console.log("Set project id");
@@ -102,7 +82,8 @@ function ChartListing() {
     // get all projects for this programme selected
     axios
       .get(`${host}/reports/get_projects_list/${event.target.value}`, {
-        headers: { Authorization: `Basic ${localStorage.getItem("token")}` },
+        headers: { Authorization: `Basic ${localStorage.getItem("token")}`,  
+        "Accept-Language": `${localStorage.getItem("locale")}` },
       })
       .then((res) => {
         setProjects(
@@ -127,7 +108,8 @@ function ChartListing() {
     };
     axios
       .get(`${host}/reports/photos`, {
-        headers: { Authorization: `Basic ${localStorage.getItem("token")}` },
+        headers: { Authorization: `Basic ${localStorage.getItem("token")}`, 
+        "Accept-Language": `${localStorage.getItem("locale")}` },
         params: request,
       })
       .then((res) => {
@@ -159,7 +141,8 @@ function ChartListing() {
     };
     axios
       .get(`${host}/reports/photos`, {
-        headers: { Authorization: `Basic ${localStorage.getItem("token")}` },
+        headers: { Authorization: `Basic ${localStorage.getItem("token")}`, 
+        "Accept-Language": `${localStorage.getItem("locale")}` },
         params: request,
       })
       .then((res) => {
@@ -197,16 +180,6 @@ function ChartListing() {
         </Col>
       </Row>
       <br />
-      {spinner && (
-        <Row>
-          <br />
-          <br />
-          <Col md={{ span: 3, offset: 5 }}>
-            <Spinner animation="border" variant="primary" />
-            &nbsp;
-          </Col>
-        </Row>
-      )}
       {data && data.activity && (
         <div>
           <ProjectIssueGraph

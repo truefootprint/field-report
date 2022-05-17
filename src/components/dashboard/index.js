@@ -1,14 +1,68 @@
-import React from "react";
+import { useHistory } from "react-router-dom";
+import React, { useState, useEffect, useCallback, useContext } from "react";
+import { AppContext } from '../../context';
 import ChartListing from "../chart_listing";
 import TopNavBar from "./top_nav_bar";
 import * as Rbs from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../../sb-admin-2.css";
 import logo from "../../TF-White.svg";
+import axios from "axios";
 import { propTypes } from "react-bootstrap/esm/Image";
-import { useHistory } from "react-router-dom";
+import {
+  Col,
+  Row,
+  Spinner,
+  Container,
+  Form,
+  FormControl,
+  Modal,
+  Button,
+  Table,
+} from "react-bootstrap";
+
+let host;
+//host = "https://field-backend.truefootprint.com";
+host = "http://localhost:3000";
 
 function Dashboard(props) {
+  const [data, setData] = useState({});
+  const [spinner, setSpinner] = useState(false);
+  const { userInterfaceText, setUserInterfaceText  } = useContext(AppContext);
+
+  function handleGenerateReport() {
+    setSpinner(true);
+    setData({});
+    let request = {
+      project_id: document.getElementById("project-select").value,
+      programme_id: document.getElementById("programme-select").value,
+      startDate: document.getElementById("start-date-select").value,
+      endDate: document.getElementById("end-date-select").value,
+    };
+    axios
+      .get(`${host}/reports/99`, {
+        headers: {
+          Authorization: `Basic ${localStorage.getItem("token")}`,
+          "Accept-Language": `${localStorage.getItem("locale")}`,
+        },
+        params: request,
+      })
+      .then((res) => {
+        setSpinner(false);
+        setData(res.data);
+        setUserInterfaceText(res.data.user_interface_text);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function setLocale(locale) {
+    //localStorage.removeItem("locale");
+    localStorage.setItem("locale", locale);
+    handleGenerateReport();
+  }
+
   let history = useHistory();
   function handleLogout(event) {
     localStorage.removeItem("token");
@@ -42,9 +96,23 @@ function Dashboard(props) {
       </ul>
       <div id="content-wrapper" className="d-flex flex-column">
         <div id="content">
-          <TopNavBar handleLogout={handleLogout} />
+          <TopNavBar handleLogout={handleLogout} setLocale={setLocale} />
           <div className="container-fluid">
-            <ChartListing />
+            {spinner && (
+              <Row>
+                <br />
+                <br />
+                <Col md={{ span: 3, offset: 5 }}>
+                  <Spinner animation="border" variant="primary" />
+                  &nbsp;
+                </Col>
+              </Row>
+            )}
+            <ChartListing
+              setData={setData}
+              data={data}
+              handleGenerateReport={handleGenerateReport}
+            />
           </div>
         </div>
         <footer className="sticky-footer bg-white">

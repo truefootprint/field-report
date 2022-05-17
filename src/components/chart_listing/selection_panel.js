@@ -1,8 +1,28 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Col, Row, Spinner, Container, Form, FormControl, Modal, Button, Table } from "react-bootstrap";
+import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
+import { AppContext } from '../../context';
+import {
+  Col,
+  Row,
+  Spinner,
+  Container,
+  Form,
+  FormControl,
+  Modal,
+  Button,
+  Table,
+} from "react-bootstrap";
+import translate from "../../helpers/translate";
 
-function SelectionPanel({programmes, projects, selectProgrammeHandler, selectProjectHandler
-                        ,setSelectedValues, selectedValues, handleGenerateReport}) {
+function SelectionPanel({
+  programmes,
+  projects,
+  selectProgrammeHandler,
+  selectProjectHandler,
+  setSelectedValues,
+  selectedValues,
+  handleGenerateReport,
+}) {
+  const { userInterfaceText, setUserInterfaceText } = useContext(AppContext);
   return (
     <div className="card shadow mb-4">
       <div className="card-header py-3">
@@ -80,7 +100,7 @@ function SelectionPanel({programmes, projects, selectProgrammeHandler, selectPro
                   onClick={handleGenerateReport}
                   style={{ "margin-top": "30px" }}
                 >
-                  Generate Report
+                  {translate("report_generate_report_label", userInterfaceText)}
                 </Button>
               </Col>
             </Row>

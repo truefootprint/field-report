@@ -1,5 +1,6 @@
-import React, { useState, useEffect, useCallback } from "react";
-import axios from 'axios';
+import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
+import { AppContext } from '../../context';
+import axios from "axios";
 import { useHistory } from "react-router-dom";
 
 let host;
@@ -10,44 +11,33 @@ host = "http://localhost:3000";
 function Login(props) {
   let history = useHistory();
   const [token, setToken] = useState("");
-  
+  const { userInterfaceText, setUserInterfaceText  } = useContext(AppContext);
+
   function handleChange(event) {
-    setToken(btoa(`user:${event.target.value}`)); 
+    setToken(btoa(`user:${event.target.value}`));
   }
 
-  const handleSubmit = async() =>{
-      let res = await axios
+  const handleSubmit = async () => {
+    let res = await axios
       .get(`${host}/reports/setup_report_form`, {
         headers: {
-          'Authorization': `Basic ${token}`
-        }
-      }).then(data => {
+          Authorization: `Basic ${token}`,
+        },
+      })
+      .then((data) => {
         return data;
       })
       .catch((err) => {
         console.log(err);
-      });       
-      if (res.status === 200) {
-        console.log("BEFORE REDIRECT");
-        props.setLogin(true);
-        localStorage.setItem("token", token);               
-      }
-      props.history.push("/dashboard");
-  }
-
-  // const loginClick = async() => {
-  //   let res = await axios.post('/api/users/auth', {
-  //       email: email,
-  //       password: password
-  //   }).then(data => {
-  //       return data;
-  //   })
-  //   .catch((error)=> {
-  //     console.log(error);
-  //   });
-  //   history.push("/dashboard");
-  //   localStorage.setItem("jwt-token", res.data.token);
-  // }
+      });
+    if (res.status === 200) {
+      setUserInterfaceText(res.data.user_interface_text);
+      console.log("BEFORE REDIRECT");
+      props.setLogin(true);
+      localStorage.setItem("token", token);            
+    }
+    props.history.push("/dashboard");
+  };
 
   return (
     <div className="container">
@@ -66,14 +56,25 @@ function Login(props) {
                     </div>
                     <div className="user">
                       <div className="form-group">
-                        <input className="form-control form-control-user" id="exampleInputEmail" placeholder="Enter Email Address..." />
+                        <input
+                          className="form-control form-control-user"
+                          id="exampleInputEmail"
+                          placeholder="Enter Email Address..."
+                        />
                       </div>
                       <div className="form-group">
-                        <input type="password" onChange={handleChange} className="form-control form-control-user" placeholder="Password" />
+                        <input
+                          type="password"
+                          onChange={handleChange}
+                          className="form-control form-control-user"
+                          placeholder="Password"
+                        />
                       </div>
-                      <div className="form-group">
-                      </div>
-                      <button onClick={handleSubmit} className="btn btn-primary btn-user btn-block">
+                      <div className="form-group"></div>
+                      <button
+                        onClick={handleSubmit}
+                        className="btn btn-primary btn-user btn-block"
+                      >
                         Login
                       </button>
                       <hr />
@@ -93,10 +94,7 @@ function Login(props) {
         </div>
       </div>
     </div>
-      )
+  );
 }
 
 export default Login;
-
-
-

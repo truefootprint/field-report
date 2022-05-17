@@ -73,7 +73,7 @@ function MultiChoiceGraph(props) {
                             handleShow("graph-" + graph.question_id)
                           }
                         >
-                          Enlarge graph
+                          agrandir le graphique
                         </Button>
                       </Col>
                       {graph.free_text_question && (
