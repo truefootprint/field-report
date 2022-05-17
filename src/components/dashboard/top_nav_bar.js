@@ -1,18 +1,10 @@
-import React, { useState, useEffect, useCallback } from "react";
-import {
-  Dropdown,
-  Col,
-  Row,
-  Spinner,
-  Container,
-  Form,
-  FormControl,
-  Modal,
-  Button,
-  Table,
-} from "react-bootstrap";
+import React, { useState, useEffect, useContext } from "react";
+import translate from "../../helpers/translate";
+import { AppContext } from "../../context";
 
 function TopNavBar({ handleLogout, setLocale }) {
+  const { userInterfaceText, setUserInterfaceText } = useContext(AppContext);
+  
   return (
     <nav className="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
       <button
@@ -47,7 +39,7 @@ function TopNavBar({ handleLogout, setLocale }) {
               onClick={handleLogout}
               className="btn btn-primary btn-user btn-block"
             >
-              Logodddut
+              {translate("report_logout_label", userInterfaceText)}
             </button>
           </a>
         </li>

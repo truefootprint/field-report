@@ -1,12 +1,15 @@
 import ImagePagination from "../pagination";
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useContext, useCallback } from "react";
 import { Col, Row, Spinner, Container, Form, FormControl, Modal, Button, Table } from "react-bootstrap";
 import Gallery from "react-photo-gallery";
 import Carousel, { Modal as ModalCarousel, ModalGateway } from "react-images";
+import translate from "../../helpers/translate";
+import { AppContext } from "../../context";
 
 function IssuePhotos({issuePhotos, data, issuePhotosCount, requestNextImages}) {
     const [currentIssuesImage, setCurrentIssuesImage] = useState(0);
     const [viewerIssuesIsOpen, setIssuesViewerIsOpen] = useState(false);
+    const { userInterfaceText, setUserInterfaceText } = useContext(AppContext);
   
     const openIssuesLightbox = useCallback((event, { photo, index }) => {
       setCurrentIssuesImage(index);
@@ -23,7 +26,7 @@ function IssuePhotos({issuePhotos, data, issuePhotosCount, requestNextImages}) {
       <div className="card shadow mb-4">
         <div className="card-header py-3">
           <h6 className="m-0 font-weight-bold text-primary">
-            Gallery (Issues)
+          {translate("report_gallery_issues_label", userInterfaceText)}
           </h6>
         </div>
         <div className="card-body">

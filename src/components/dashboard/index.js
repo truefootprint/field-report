@@ -1,6 +1,6 @@
 import { useHistory } from "react-router-dom";
 import React, { useState, useEffect, useCallback, useContext } from "react";
-import { AppContext } from '../../context';
+import { AppContext } from "../../context";
 import ChartListing from "../chart_listing";
 import TopNavBar from "./top_nav_bar";
 import * as Rbs from "react-bootstrap";
@@ -28,7 +28,7 @@ host = "http://localhost:3000";
 function Dashboard(props) {
   const [data, setData] = useState({});
   const [spinner, setSpinner] = useState(false);
-  const { userInterfaceText, setUserInterfaceText  } = useContext(AppContext);
+  const { userInterfaceText, setUserInterfaceText } = useContext(AppContext);
 
   function handleGenerateReport() {
     setSpinner(true);
@@ -65,6 +65,7 @@ function Dashboard(props) {
 
   let history = useHistory();
   function handleLogout(event) {
+    localStorage.setItem("locale", "en");
     localStorage.removeItem("token");
     props.setLogin(false);
     history.push("/");
@@ -98,17 +99,8 @@ function Dashboard(props) {
         <div id="content">
           <TopNavBar handleLogout={handleLogout} setLocale={setLocale} />
           <div className="container-fluid">
-            {spinner && (
-              <Row>
-                <br />
-                <br />
-                <Col md={{ span: 3, offset: 5 }}>
-                  <Spinner animation="border" variant="primary" />
-                  &nbsp;
-                </Col>
-              </Row>
-            )}
             <ChartListing
+              spinner={spinner}
               setData={setData}
               data={data}
               handleGenerateReport={handleGenerateReport}

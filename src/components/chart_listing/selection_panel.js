@@ -33,7 +33,7 @@ function SelectionPanel({
           <Form.Group>
             <Row>
               <Col>
-                <Form.Label>Programmes</Form.Label>
+                <Form.Label>{translate("report_programmes_label", userInterfaceText)}</Form.Label>
                 <Form.Control
                   id="programme-select"
                   as="select"
@@ -48,7 +48,7 @@ function SelectionPanel({
                 </Form.Control>
               </Col>
               <Col>
-                <Form.Label>Projects</Form.Label>
+                <Form.Label>{translate("report_projects_label", userInterfaceText)}</Form.Label>
                 <Form.Control
                   id="project-select"
                   as="select"
@@ -67,7 +67,7 @@ function SelectionPanel({
                 </Form.Control>
               </Col>
               <Col>
-                <Form.Label>Start date</Form.Label>
+                <Form.Label>{translate("report_start_date_label", userInterfaceText)}</Form.Label>
                 <FormControl
                   id="start-date-select"
                   onChange={(date) => {
@@ -81,7 +81,7 @@ function SelectionPanel({
                 />
               </Col>
               <Col>
-                <Form.Label>End date</Form.Label>
+                <Form.Label>{translate("report_end_date_label", userInterfaceText)}</Form.Label>
                 <FormControl
                   id="end-date-select"
                   onChange={(date) =>

@@ -1,8 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useContext } from "react";
+import translate from "../../helpers/translate";
 import axios from "axios";
 import { Waypoint } from "react-waypoint";
 import { HorizontalBar } from "react-chartjs-2";
 import DatePicker from "react-datepicker";
+import { AppContext } from "../../context";
 import {
   Col,
   Row,
@@ -16,6 +18,7 @@ import {
 } from "react-bootstrap";
 
 function MultiChoiceGraph(props) {
+  const { userInterfaceText, setUserInterfaceText } = useContext(AppContext);
   const [select_id, setSelectedId] = useState(0);
 
   const handleClose = () => setSelectedId(0);
@@ -45,7 +48,7 @@ function MultiChoiceGraph(props) {
     <>
       <Row>
         <Col>
-          <h3> Activity: {props.project_activity.project_activity_name} </h3>
+          <h3> {translate("report_activity_label", userInterfaceText)}: {props.project_activity.project_activity_name} </h3>
           <br />
           <Row  style={{ height: "100%" }}>
             {props.project_activity.project_activity_graphs.map((graph) => (
@@ -73,7 +76,7 @@ function MultiChoiceGraph(props) {
                             handleShow("graph-" + graph.question_id)
                           }
                         >
-                          agrandir le graphique
+                          {translate("report_enlarge_graph_label", userInterfaceText)}
                         </Button>
                       </Col>
                       {graph.free_text_question && (
@@ -83,7 +86,7 @@ function MultiChoiceGraph(props) {
                             variant="primary"
                             onClick={() => handleShow(graph.question_id)}
                           >
-                            View responses
+                            {translate("report_view_responses_label", userInterfaceText)}
                           </Button>
                         </Col>
                       )}
@@ -96,7 +99,7 @@ function MultiChoiceGraph(props) {
                               handleShow("issues-" + graph.question_id)
                             }
                           >
-                            View issues ({graph.issue_notes_count})
+                            {translate("report_view_issues_label", userInterfaceText)} ({graph.issue_notes_count})
                           </Button>
                         </Col>
                       )}
