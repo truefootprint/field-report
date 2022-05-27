@@ -1,5 +1,6 @@
 import React, { createContext, useState, useEffect, useCallback, useContext } from "react";
 import { AppContext } from '../../context';
+import translate from "../../helpers/translate";
 import {
   Col,
   Row,
@@ -11,7 +12,7 @@ import {
   Button,
   Table,
 } from "react-bootstrap";
-import translate from "../../helpers/translate";
+
 
 function SelectionPanel({
   programmes,
@@ -26,7 +27,7 @@ function SelectionPanel({
   return (
     <div className="card shadow mb-4">
       <div className="card-header py-3">
-        <h6 className="m-0 font-weight-bold text-primary">Select Panel </h6>
+        <h6 className="m-0 font-weight-bold text-primary">{translate("report_select_panel_label", userInterfaceText)}</h6>
       </div>
       <div className="card-body">
         <Form>
@@ -56,7 +57,7 @@ function SelectionPanel({
                 >
                   <option value="" onSelect={selectProjectHandler}>
                     {" "}
-                    All
+                    {translate("report_all_projects_label", userInterfaceText)}
                   </option>
                   {projects &&
                     projects.map((project) => (

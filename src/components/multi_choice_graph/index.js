@@ -1,10 +1,10 @@
 import React, { useState, useContext } from "react";
 import translate from "../../helpers/translate";
+import { AppContext } from "../../context";
 import axios from "axios";
 import { Waypoint } from "react-waypoint";
 import { HorizontalBar } from "react-chartjs-2";
 import DatePicker from "react-datepicker";
-import { AppContext } from "../../context";
 import {
   Col,
   Row,
@@ -19,6 +19,8 @@ import {
 
 function MultiChoiceGraph(props) {
   const { userInterfaceText, setUserInterfaceText } = useContext(AppContext);
+  console.log("MODAL");
+  console.log(userInterfaceText);
   const [select_id, setSelectedId] = useState(0);
 
   const handleClose = () => setSelectedId(0);
@@ -118,7 +120,7 @@ function MultiChoiceGraph(props) {
                     <Modal.Header closeButton>
                       <Modal.Title>
                         {" "}
-                        {graph.issue_notes_count} issues for "
+                        {graph.issue_notes_count} {translate("report_issue_modal_issues_for_label", userInterfaceText)} "
                         {graph.question_text}"
                       </Modal.Title>
                     </Modal.Header>
@@ -126,11 +128,11 @@ function MultiChoiceGraph(props) {
                       <Table striped bordered hover responsive variant="dark">
                         <thead>
                           <tr>
-                            <th colspan="1">Issue ID</th>
-                            <th colspan="5">Resolved</th>
-                            <th colspan="3">User ID</th>
-                            <th colspan="3">Note</th>
-                            <th colspan="3">Date</th>
+                            <th colspan="1">{translate("report_issue_modal_issue_id_label", userInterfaceText)}</th>
+                            <th colspan="5">{translate("report_issue_modal_resolved_label", userInterfaceText)}</th>
+                            <th colspan="3">{translate("report_response_modal_user_id_label", userInterfaceText)}</th>
+                            <th colspan="3">{translate("report_issue_modal_note_label", userInterfaceText)}</th>
+                            <th colspan="3">{translate("report_response_modal_date_label", userInterfaceText)}</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -138,7 +140,7 @@ function MultiChoiceGraph(props) {
                             <tr>
                               <td colspan="1">{issue.issue_id}</td>
                               <td colspan="5">
-                                {issue.resolved ? "Resolved" : "Not resolved"}
+                                {issue.resolved ? translate("report_issue_modal_resolved_label", userInterfaceText) : translate("report_issue_modal_not_resolved_label", userInterfaceText)}
                               </td>
                               <td colspan="3">{issue.user_id}</td>
                               <td colspan="3">{issue.note}</td>
@@ -181,10 +183,10 @@ function MultiChoiceGraph(props) {
                       <Table striped bordered hover responsive variant="dark">
                         <thead>
                           <tr>
-                            <th colspan="1">User ID</th>
-                            <th colspan="5">Response</th>
-                            <th colspan="3">Date</th>
-                            <th colspan="3">Project</th>
+                            <th colspan="1">{translate("report_response_modal_user_id_label", userInterfaceText)}</th>
+                            <th colspan="5">{translate("report_response_modal_response_label", userInterfaceText)}</th>
+                            <th colspan="3">{translate("report_response_modal_date_label", userInterfaceText)}</th>
+                            <th colspan="3">{translate("report_response_modal_project_label", userInterfaceText)}</th>
                           </tr>
                         </thead>
                         <tbody>

@@ -1,6 +1,7 @@
 import { useHistory } from "react-router-dom";
-import React, { useState, useEffect, useCallback, useContext } from "react";
+import React, { useState, useEffect, useReducer, useContext } from "react";
 import { AppContext } from "../../context";
+import translate from "../../helpers/translate";
 import ChartListing from "../chart_listing";
 import TopNavBar from "./top_nav_bar";
 import * as Rbs from "react-bootstrap";
@@ -28,9 +29,15 @@ host = "http://localhost:3000";
 function Dashboard(props) {
   const [data, setData] = useState({});
   const [spinner, setSpinner] = useState(false);
+  const [rerender, setRender] = useState("");
+  const [showResponsePhotos, setShowResponsePhotos] = useState(false);
+  const [showIssuePhotos, setShowIssuePhotos] = useState(false);
+  
   const { userInterfaceText, setUserInterfaceText } = useContext(AppContext);
 
   function handleGenerateReport() {
+    setShowResponsePhotos(false);
+    setShowIssuePhotos(false);
     setSpinner(true);
     setData({});
     let request = {
@@ -57,14 +64,17 @@ function Dashboard(props) {
       });
   }
 
+
+
   function setLocale(locale) {
     //localStorage.removeItem("locale");
     localStorage.setItem("locale", locale);
     console.log("DATA?");
     console.log(data);
+    setRender(locale);
     if (Object.keys(data).length) {
       handleGenerateReport();
-    }
+    }    
   }
 
   let history = useHistory();
@@ -89,7 +99,7 @@ function Dashboard(props) {
         {/* <hr className="sidebar-divider my-0" /> */}
         <li className="nav-item">
           <a className="nav-link" href="#">
-            <h5 style={{ paddingLeft: "25px" }}>Report Viewer</h5>
+            <h5 style={{ paddingLeft: "25px" }}>{translate("report_report_viewer_label", userInterfaceText)}</h5>
             <small style={{ paddingLeft: "75px" }}>(Beta)</small>
           </a>
         </li>
@@ -104,6 +114,11 @@ function Dashboard(props) {
           <TopNavBar handleLogout={handleLogout} setLocale={setLocale} />
           <div className="container-fluid">
             <ChartListing
+              showResponsePhotos={showResponsePhotos}
+              setShowResponsePhotos={setShowResponsePhotos}
+              showIssuePhotos={showIssuePhotos}
+              setShowIssuePhotos={setShowIssuePhotos}
+              rerender={rerender}
               spinner={spinner}
               setData={setData}
               data={data}

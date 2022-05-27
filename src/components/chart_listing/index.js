@@ -15,7 +15,7 @@ let host;
 //host = "https://field-backend.truefootprint.com";
 host = "http://localhost:3000";
 
-function ChartListing({ handleGenerateReport, data, spinner }) {
+function ChartListing({ handleGenerateReport, data, spinner, rerender, showResponsePhotos, setShowResponsePhotos, showIssuePhotos, setShowIssuePhotos }) {
   const [select_id, setSelectedId] = useState(0);
 
   const handleClose = () => setSelectedId(0);
@@ -23,8 +23,6 @@ function ChartListing({ handleGenerateReport, data, spinner }) {
 
   const [test, setTest] = useState(false);
   const [showWayPoint, setShowWayPoint] = useState(false);
-  const [showResponsePhotos, setShowResponsePhotos] = useState(false);
-  const [showIssuePhotos, setShowIssuePhotos] = useState(false);
   const [loadingImages, setLoadingImages] = useState(false);
 
   const [photos, setPhotos] = useState([]);
@@ -50,10 +48,11 @@ function ChartListing({ handleGenerateReport, data, spinner }) {
           "Accept-Language": `${localStorage.getItem("locale")}`,
         },
       })
-      .then((res) => {
+      .then((res) => {        
         setProgrammes(
           res.data.programmes.sort((a, b) => a.name.localeCompare(b.name))
         );
+        setUserInterfaceText(res.data.user_interface_text);
       })
       .catch((err) => {
         console.log(err);
@@ -62,7 +61,7 @@ function ChartListing({ handleGenerateReport, data, spinner }) {
     document.getElementById("end-date-select").value = new Date()
       .toISOString()
       .slice(0, 10);
-  }, []); // END OF USE EFFECT FOR INTIAL LOAD
+  }, [rerender]); // END OF USE EFFECT FOR INTIAL LOAD
 
   function selectProjectHandler(event) {
     console.log("Set project id");

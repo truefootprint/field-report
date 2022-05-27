@@ -13,7 +13,7 @@ function TopNavBar({ handleLogout, setLocale }) {
       >
         <i className="fa fa-bars" />
       </button>
-      <h3>FieldApp reports</h3>
+      <h3>{translate("report_field_app_reports_label", userInterfaceText)}</h3>
 
       <ul className="navbar-nav ml-auto">
         {/* 
