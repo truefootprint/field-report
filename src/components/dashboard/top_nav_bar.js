@@ -22,6 +22,7 @@ function TopNavBar({ handleLogout, setLocale }) {
         <select onChange={(e) => setLocale(e.target.value)} style={{marginTop: "14px", marginBottom: "14px"}} className="form-select" aria-label="Default select example">
           <option value="en" selected="selected">English</option>
           <option value="fr">Français</option>
+          <option value="rw">Kinyarwanda</option>
           </select>
         {/* </li> */}
         <div className="topbar-divider d-none d-sm-block" />
